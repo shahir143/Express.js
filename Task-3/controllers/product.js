@@ -1,4 +1,5 @@
-const products = [];
+const Product =require('../models/product')
+const Contract =require('../models/contact')
 
 exports.getAddProduct=(req, res, next) => {
     res.render('add-product', {
@@ -10,12 +11,13 @@ exports.getAddProduct=(req, res, next) => {
     });
   }
 exports.postProduct=(req, res, next) => {
-    products.push({ title: req.body.title });
-    console.log(req.body);
+  const product = new Product(req.body.title)
+  product.save();
     res.redirect('/');
   }
 
 exports.getProducts= (req, res, next) => {
+  Product.fetchAll((products)=>{
     res.render('shop', {
       prods: products,
       pageTitle: 'Shop',
@@ -24,6 +26,7 @@ exports.getProducts= (req, res, next) => {
       activeShop: true,
       productCSS: true
     });
+  });  
   }
 exports.contactdetails=(req, res, next) => {
     res.render('contact', {
@@ -33,8 +36,13 @@ exports.contactdetails=(req, res, next) => {
       productCSS: true,
     });
   }
-exports.postContact=(req, res, next) => {
-    console.log(req.body);
+  exports.postContact = (req, res, next) => {
+    const name = req.body.name;
+    const email = req.body.email;
+    const contract = new Contract(name, email);
+    contract.save();
+  
     return res.send(`<h1>Form successfully filled</h1>
       <li><a href="/"><button>HOME</button></a></li>`);
   }
+  
