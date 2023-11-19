@@ -41,7 +41,6 @@ exports.contactdetails=(req, res, next) => {
     const email = req.body.email;
     const contract = new Contract(name, email);
     contract.save();
-  
     return res.send(`<h1>Form successfully filled</h1>
       <li><a href="/"><button>HOME</button></a></li>`);
   }
